@@ -19,7 +19,7 @@ def Nodejs(dirname):
         sudo("cp -R * /usr/local")
 
 @task
-def Emscripten(diname):
+def Emscripten(dirname):
     with cd(dirname):
         sudo("git clone https://github.com/kripken/emscripten.git")
 
@@ -28,3 +28,21 @@ def Emscripten(diname):
 def AptLibrary():
     sudo("apt-get install git openjdk-7-jdk apache2 vim tmux subversion -y")
 
+@task
+def C2js(dirname, homedir):
+    with cd(dirname):
+        run("git clone https://github.com/nikuuchi/c2js.git")
+    with cd("/var/www"):
+        sudo("ln -s " + dirname +"/c2js ./c2js")
+        sudo("cp " + homedir + ".emscripten /var/www"
+
+@task WriteApachConf():
+    text = '''
+        <Directory /var/www/c2js/>
+             Options ExecCGI FollowSymLinks MultiViews
+             AllowOverride None
+             Order allow,deny
+             allow from all
+        </Directory>
+        '''
+    
