@@ -23,6 +23,7 @@ def Emscripten(diname):
     with cd(dirname):
         sudo("git clone https://github.com/kripken/emscripten.git")
 
+# TODO use apt.py
 @task
 def AptLibrary():
     sudo("apt-get install git openjdk-7-jdk apache2 vim tmux subversion -y")
