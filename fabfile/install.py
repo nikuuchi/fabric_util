@@ -22,6 +22,7 @@ def Nodejs(dirname):
 def Emscripten(dirname):
     with cd(dirname):
         sudo("git clone https://github.com/kripken/emscripten.git")
+    run(dirname+"/emscripten/emcc")
 
 # TODO use apt.py
 @task
@@ -29,20 +30,23 @@ def AptLibrary():
     sudo("apt-get install git openjdk-7-jdk apache2 vim tmux subversion -y")
 
 @task
-def C2js(dirname, homedir):
+def C2js(dirname="/home/uchida", homedir="/home/uchida"):
     with cd(dirname):
         run("git clone https://github.com/nikuuchi/c2js.git")
     with cd("/var/www"):
-        sudo("ln -s " + dirname +"/c2js ./c2js")
-        sudo("cp " + homedir + ".emscripten /var/www"
+        sudo("ln -s " + dirname +"/c2js ./aspen")
+        sudo("cp " + homedir + "/.emscripten /var/www")
+        sudo("chown -R www-data:www-data .emscripten")
+        sudo("mkdir -p .emscripten_cache")
+        sudo("chown -R www-data:www-data .emscripten_cache")
 
-@task WriteApachConf():
-    text = '''
-        <Directory /var/www/c2js/>
-             Options ExecCGI FollowSymLinks MultiViews
-             AllowOverride None
-             Order allow,deny
-             allow from all
-        </Directory>
-        '''
-    
+#@task
+#WriteApachConf():
+#    text = '''
+#        <Directory /var/www/aspen/>
+#             Options ExecCGI FollowSymLinks MultiViews
+#             AllowOverride None
+#             Order allow,deny
+#             allow from all
+#        </Directory>
+#        '''

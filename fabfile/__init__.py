@@ -10,9 +10,10 @@ def set_env():
 
 @task
 def start():
-    dirname = "/home/tsunade"
+    dirname = "/home/uchida"
     apt.upgrade()
     install.AptLibrary()
-    install.LLVM()
-    install.Nodejs()
-    install.Emscripten()
+    install.LLVM(dirname)
+    install.Nodejs(dirname)
+    install.Emscripten(dirname)
+    install.C2js(dirname,dirname)
